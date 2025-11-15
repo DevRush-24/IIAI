@@ -1,0 +1,69 @@
+/* ===== FOOTER TEXT COLORS ===== */
+
+/* Make all normal footer text (paragraphs, spans, etc.) grey */
+.footer,
+.footer p,
+.footer span,
+.footer-item p,
+.footer-item span {
+  color: #c7c7c7 !important;
+}
+
+/* Make all footer links grey */
+.footer a {
+  color: #c7c7c7 !important;
+  text-decoration: none;
+}
+
+/* Hover effect */
+.footer a:hover {
+  color: #ffffff !important;
+}
+
+/* Ensure headings stay white */
+.footer h4,
+.footer h3,
+.footer h2 {
+  color: #ffffff !important;
+}
+
+/* Copyright text grey */
+.copyright,
+.copyright span,
+.copyright a {
+  color: #c7c7c7 !important;
+  text-decoration: none !important;
+}
+
+/* Do NOT modify social icon buttons */
+.footer .btn.btn-light i {
+  color: inherit; 
+}
+
+/* Footer background */
+.footer {
+  background-color: #102147 !important;
+}
+
+/* Copyright (footer bottom strip) */
+.copyright {
+  background-color: #102147 !important;
+}
+
+/* Contact button in footer */
+.footer .btn.btn-primary {
+  background-color: #343d99 !important;
+  border-color: #343d99 !important;
+}
+
+/* Social icon buttons */
+.footer .btn.btn-light.btn-md-square {
+  background-color: #343d99 !important;
+  border-color: #343d99 !important;
+  color: #ffffff !important;
+}
+
+/* Ensure icons inside buttons stay white */
+.footer .btn.btn-light.btn-md-square i {
+  color: #ffffff !important;
+}

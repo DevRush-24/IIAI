@@ -1,0 +1,4 @@
+:root {
+  --bs-primary: #343d99 !important;
+  --bs-primary-rgb: 52, 61, 153 !important; /* optional but recommended */
+}
