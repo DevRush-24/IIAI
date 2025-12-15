@@ -14,7 +14,7 @@ app.use(express.json());
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://expense-tracker-app-1-x6hv.onrender.com"
+  "https://www.iiai.org.in"
 ];
 
 app.use(cors({
