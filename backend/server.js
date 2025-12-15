@@ -1,82 +1,63 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import mongoose from 'mongoose';
-import model from './schema/userschema.js'; 
-import cors from 'cors';
-import jwt from 'jsonwebtoken';
-import authRoutes from './routes/authRoutes.js'
+import express from "express";
+import dotenv from "dotenv";
+import mongoose from "mongoose";
+import cors from "cors";
+import jwt from "jsonwebtoken";
+import authRoutes from "./routes/authRoutes.js";
 
-const app = express();
 dotenv.config();
+const app = express();
 
+/* ---------- MIDDLEWARE ---------- */
 app.use(express.json());
-
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://www.iiai.org.in"
+  "https://iiai.org.in",
 ];
 
-app.use(cors({
-  origin: (origin, callback) => {
-    // allow requests with no origin (Postman, mobile apps)
-    if (!origin) return callback(null, true);
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
+// handle preflight
+app.options("*", cors());
 
+/* ---------- DATABASE ---------- */
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then(() => console.log("MongoDB connected"))
+  .catch(console.error);
 
-
-try {
-    mongoose.connect(process.env.MONGODB_URI)
-    console.log("MongoDB connected!!")
-}
-catch (error) {
-    console.error(error)
-}
-
-
-
+/* ---------- AUTH ---------- */
 export const verifyToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1]; // "Bearer <token>"
+  const authHeader = req.headers.authorization;
+  const token = authHeader?.split(" ")[1];
 
-  if (!token) return res.status(401).json({ message: 'Access Denied. No token.' });
+  if (!token) {
+    return res.status(401).json({ message: "No token provided" });
+  }
 
   try {
-    const verified = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = verified; // Add user info to request
-    next(); // Go to the actual route
-  } catch (err) {
-    res.status(403).json({ message: 'Invalid Token' });
+    req.user = jwt.verify(token, process.env.JWT_SECRET);
+    next();
+  } catch {
+    return res.status(403).json({ message: "Invalid token" });
   }
 };
 
-app.use('/api/auth',authRoutes);
+/* ---------- ROUTES ---------- */
+app.use("/api/auth", authRoutes);
 
-
-app.get('/dashboard', verifyToken, (req, res) => {
-  res.send("Dashboard");
-});
-
-// Check if token is valid (used by frontend auto-login)
 app.get("/api/auth/me", verifyToken, (req, res) => {
-  res.json({
-    message: "Token valid",
-    user: req.user,
-  });
+  res.json({ user: req.user });
 });
 
-
-
+/* ---------- SERVER ---------- */
 app.listen(process.env.PORT, () => {
-    console.log("App is running on", process.env.PORT);
-})
+  console.log("Server running on", process.env.PORT);
+});
