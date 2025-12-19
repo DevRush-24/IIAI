@@ -62,7 +62,6 @@ app.get("/api/auth/me", verifyToken, (req, res) => {
   res.json({ user: req.user });
 });
 
-/* ---------- SERVER ---------- */
-app.listen(process.env.PORT, () => {
-  console.log("Server running on", process.env.PORT);
-});
+
+export default app;
+
