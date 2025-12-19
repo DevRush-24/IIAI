@@ -75,20 +75,20 @@ const Navbar = () => {
                       About us
                     </a>
                     <div className="dropdown-menu m-0">
-                      <a href="iiai.org.in/about.html" className="dropdown-item">
+                      <a href="https://www.iiai.org.in/about.html" className="dropdown-item">
                         Objectives
                       </a>
                       <a
-                        href="iiai.org.in/Executive_Committee.html"
+                        href="https://www.iiai.org.in/Executive_Committee.html"
                         className="dropdown-item"
                          target="_self"
                       >
-                        Managing Committee
+                        Executive Committee
                       </a>
                     </div>
                   </div>
 
-                  <a href="iiai.org.in/Our_Members.html" className="nav-item nav-link"  target="_self">
+                  <a href="https://www.iiai.org.in/Our_Members.html" className="nav-item nav-link"  target="_self">
                     IIAI Members
                   </a>
 
@@ -101,19 +101,19 @@ const Navbar = () => {
                       Activities
                     </a>
                     <div className="dropdown-menu m-0">
-                      <a href="iiai.org.in/Announcement.html" className="dropdown-item" target="_self">
+                      <a href="https://www.iiai.org.in/Announcement.html" className="dropdown-item" target="_self">
                         Announcement
                       </a>
-                      <a href="iiai.org.in/Courses.html" className="dropdown-item" target="_self">
+                      <a href="https://www.iiai.org.in/Courses.html" className="dropdown-item" target="_self">
                         Certification Courses
                       </a>
-                      <a href="iiai.org.in/Courses.html" className="dropdown-item active" target="_self">
-                        Articles
+                      <a href="/" className="dropdown-item active" target="_self">
+                        News & Updates
                       </a>
                     </div>
                   </div>
 
-                  <a href="iiai.org.in/contact.html" className="nav-item nav-link"  target="_self">
+                  <a href="https://www.iiai.org.in/contact.html" className="nav-item nav-link"  target="_self">
                     Contact
                   </a>
                 </div>

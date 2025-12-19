@@ -17,10 +17,8 @@ function Blog1() {
     // Wait for DOM and localStorage to be available
     const checkAuth = () => {
       const token = localStorage.getItem("token");
-      console.log("Token found:", token);
 
       if (!token || token === "undefined" || token === "null") {
-        console.warn("No valid token found — redirecting to login");
         navigate("/login", { replace: true });
       }
 
@@ -123,16 +121,16 @@ function Blog1() {
                 {/* Author Box */}
                 <div className="d-flex align-items-center">
                   <img
-                    src="https://randomuser.me/api/portraits/men/45.jpg"
+                    src="https://icons.veryicon.com/png/o/object/material-design-icons/lock-76.png"
                     alt="Author"
                     className="rounded-circle me-3"
                     width="60"
                     height="60"
                   />
                   <div>
-                    <h6 className="mb-1 fw-bold">NICSTAR 2026</h6>
+                    <h6 className="mb-1 fw-bold">Member-Only Content:</h6>
                     <small className="text-muted">
-                      Members Article, IIAI
+                      Please note that this material is confidential and exclusively for members. Do not copy, share, or distribute this content outside your account.
                     </small>
                   </div>
                 </div>

@@ -16,34 +16,43 @@ function Login() {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
+  e.preventDefault();
+  setError("");
+  setLoading(true);
 
-    try {
-      const response = await fetch("https://iiai.onrender.com/api/auth/signin", {
+  try {
+    const response = await fetch(
+      "https://iiai.onrender.com/api/auth/signin",
+      {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        // ❌ DO NOT use credentials (you are not using cookies)
         body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Login failed");
       }
+    );
 
-      localStorage.setItem("token", data.token);
-      navigate("/");
-    } catch (err) {
-      console.error("Login error:", err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Login failed");
     }
-  };
+
+    // store JWT
+    localStorage.setItem("token", data.token);
+
+    navigate("/articles", {
+      state: { message: "Logged in successfully!" },
+    });
+  } catch (err) {
+    console.error("Login error:", err);
+    setError(err.message);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <>
@@ -112,7 +121,7 @@ function Login() {
 
                 <div className="d-flex justify-content-end mb-3">
                   <Link
-                    to="/forgot-password"
+                    to="/"
                     className="text-decoration-none small"
                   >
                     Forgot Password?
@@ -151,9 +160,9 @@ function Login() {
               <div className="text-center">
                 <p className="small">
                   Don't have an account?{" "}
-                  <Link to="/signup" className="fw-bold">
-                    Sign Up
-                  </Link>
+                  <a href="https://www.iiai.org.in/files/Annexure%2010%20-%20IIAI%20Membership%20Application.pdf" className="fw-bold">
+                    Become a Member
+                  </a>
                 </p>
               </div>
             </div>
@@ -165,7 +174,7 @@ function Login() {
             >
               {/* This is where your image will go */}
               <img
-                src="https://via.placeholder.com/600x800/d3d3d3/000000?text=Your+Login+Image" // Replace with your actual image path
+                src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg" // Replace with your actual image path
                 alt="Login Illustration"
                 className="img-fluid h-100 w-100 object-fit-cover" // Ensures image covers the space
                 style={{ borderRadius: "0 1rem 1rem 0" }} // Matches the card's border-radius on the right

@@ -1,7 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../style.css";
 
 function Topbar() {
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setToken(null); // re-render to hide logout button
+    window.location.reload(); // optional: refresh page
+  };
+
   return (
     <>
       {/* Topbar Start */}
@@ -27,6 +40,8 @@ function Topbar() {
 
             <div className="col-lg-3 text-center text-lg-end">
               <div className="d-flex align-items-center justify-content-end">
+
+                {/* --- Social Icons --- */}
                 <a href="#" className="btn btn-primary btn-square rounded-circle nav-fill me-3">
                   <i className="fab fa-facebook-f text-white"></i>
                 </a>
@@ -39,6 +54,16 @@ function Topbar() {
                 <a href="#" className="btn btn-primary btn-square rounded-circle nav-fill me-0">
                   <i className="fab fa-linkedin-in text-white"></i>
                 </a>
+
+                {/* --- Logout Button (shown only if token exists) --- */}
+                {token && (
+                  <button
+                    onClick={handleLogout}
+                    className="btn btn-danger btn-square rounded-circle nav-fill me-0 mx-3"
+                  >
+                    <i class="fa-solid fa-power-off"></i>
+                  </button>
+                )}
               </div>
             </div>
           </div>

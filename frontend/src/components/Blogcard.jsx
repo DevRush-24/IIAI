@@ -9,7 +9,7 @@ const BlogCard = ({
   image = dummy
 }) => {
   return (
-    <div className="card" style={{ width: "25rem" }}>
+    <div className="card" style={{ maxWidth: "25rem" }}>
       <img
         src={image}
         className="card-img-top"
