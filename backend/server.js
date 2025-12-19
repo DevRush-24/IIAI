@@ -53,6 +53,11 @@ export const verifyToken = (req, res, next) => {
 /* ---------- ROUTES ---------- */
 app.use("/api/auth", authRoutes);
 
+
+app.get("/", (req, res) => {
+  res.send("Server is running on your localhost...");
+});
+
 app.get("/api/auth/me", verifyToken, (req, res) => {
   res.json({ user: req.user });
 });
