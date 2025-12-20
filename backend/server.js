@@ -58,6 +58,20 @@ app.get("/", (req, res) => {
   res.send("Server is running on your localhost...");
 });
 
+app.get("/api/secure-pdf/:id", authenticateToken, (req, res) => {
+  const id = req.params.id;
+  const filePath = path.join(__dirname, "protected-pdfs", id + ".pdf");
+
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).send("PDF not found");
+  }
+
+  res.setHeader("Content-Type", "application/pdf");
+  res.setHeader("Content-Disposition", "inline"); 
+  fs.createReadStream(filePath).pipe(res);
+});
+
+
 app.get("/api/auth/me", verifyToken, (req, res) => {
   res.json({ user: req.user });
 });
