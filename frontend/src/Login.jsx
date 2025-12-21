@@ -42,7 +42,7 @@ function Login() {
     // store JWT
     localStorage.setItem("token", data.token);
 
-    navigate("/articles", {
+    navigate("/news-updates", {
       state: { message: "Logged in successfully!" },
     });
   } catch (err) {

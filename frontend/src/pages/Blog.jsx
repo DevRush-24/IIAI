@@ -10,33 +10,6 @@ import Footer from "../components/footer";
 import image1 from "../assets/Picture1.jpg";
 
 function Blog1() {
-  const navigate = useNavigate();
-  const [isChecking, setIsChecking] = useState(true);
-
-  useEffect(() => {
-    // Wait for DOM and localStorage to be available
-    const checkAuth = () => {
-      const token = localStorage.getItem("token");
-
-      if (!token || token === "undefined" || token === "null") {
-        navigate("/login", { replace: true });
-      }
-
-      // Stop checking after first render
-      setIsChecking(false);
-    };
-
-    checkAuth();
-  }, [navigate]);
-
-  // ⏳ Render nothing until token check is complete
-  if (isChecking) {
-    return (
-      <div className="vh-100 bg-dark text-white d-flex justify-content-center align-items-center">
-        <h4>Checking authentication...</h4>
-      </div>
-    );
-  }
 
   return (
     <>

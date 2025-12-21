@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -30,48 +30,74 @@ const toastShownRef = useRef(false); // Add a ref to track the toast
   }, [location.state]); // We can add location.state here
 
   // ✅ Local check for token only
-  const checkLocalToken = async () => {
-    setIsChecking(true);
+  // const checkLocalToken = async () => {
+  //   setIsChecking(true);
 
-    const token = localStorage.getItem("token");
+  //   const token = localStorage.getItem("token");
 
-    // No token?
-    if (!token) {
-      console.log("No token found — navigating to /login");
-      navigate("/login");
-      setIsChecking(false);
-      return;
-    }
+  //   // No token?
+  //   if (!token) {
+  //     console.log("No token found — navigating to /login");
+  //     navigate("/login");
+  //     setIsChecking(false);
+  //     return;
+  //   }
 
-    try {
-      // 🔥 Try validating token with backend
-      const res = await fetch("https://iiai.onrender.com/api/auth/me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  //   try {
+  //     // 🔥 Try validating token with backend
+  //     const res = await fetch("https://iiai.onrender.com/api/auth/me", {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
 
-      // Token expired or invalid
+  //     // Token expired or invalid
+  //     if (res.status === 401) {
+  //       console.warn("Token expired or invalid — removing it");
+  //       localStorage.removeItem("token");
+  //       navigate("/login");
+  //     } else {
+  //       console.log("Token valid — navigating to /blog");
+  //       navigate("/blog");
+  //     }
+  //   } catch (err) {
+  //     console.error("Error validating token:", err);
+  //     localStorage.removeItem("token");
+  //     navigate("/login");
+  //   }
+
+  //   setIsChecking(false);
+  // };
+
+  const handleReadMore = (path) => {
+  setIsChecking(true);
+
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    navigate("/login");
+    setIsChecking(false);
+    return;
+  }
+
+  fetch("https://iiai.onrender.com/api/auth/me", {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+    .then((res) => {
       if (res.status === 401) {
-        console.warn("Token expired or invalid — removing it");
         localStorage.removeItem("token");
         navigate("/login");
       } else {
-        console.log("Token valid — navigating to /blog");
-        navigate("/blog");
+        navigate(path);        // 👈 redirect to the specific blog you choose
       }
-    } catch (err) {
-      console.error("Error validating token:", err);
+    })
+    .catch(() => {
       localStorage.removeItem("token");
       navigate("/login");
-    }
+    })
+    .finally(() => setIsChecking(false));
+};
 
-    setIsChecking(false);
-  };
-
-  const handleReadMore = () => {
-    checkLocalToken();
-  };
 
   return (
     <>
@@ -83,23 +109,15 @@ const toastShownRef = useRef(false); // Add a ref to track the toast
         {/* Blog Cards Section */}
         <div className="container py-5">
           <div className="row justify-content-start g-4">
-            {/* Card 1 */}
-            {/* ✅ CHANGE 1: 
-              Adjusted columns for better responsiveness. 
-              'col-12' ensures it's full-width on all mobile screens (xs and sm).
-            */}
+
+            {/* Members Content */}
             <div className="col-12 col-md-6 col-lg-4">
-              {/* ✅ CHANGE 2: 
-                Removed the fixed 'style={{ width: "25rem" }}'.
-                The card will now correctly fill its parent column.
-              */}
-              <div className="card">
-                <img src={image1} className="card-img-top" alt="React Hooks" />
+
+              <div className="card h-100 d-flex flex-column" >
+                <img src="https://picsum.photos/420/250?random=1" className="card-img-top" alt="React Hooks" style={{minHeight:"276px"}}/>
                 <div className="card-body">
-                  <h5 className="card-title text-dark">NICSTAR 2026</h5>
-                  {/* ✅ CHANGE 3: 
-                    Fixed 'class=' to 'className=' (React standard).
-                  */}
+                  <h5 className="card-title text-dark">DAE, India Guidelines for Dosimetry</h5>
+                  <p className="card-subtitle mb-0.5 text-dark">September, 2025</p>
                   <span
                     className="badge rounded-pill px-0"
                     style={{ backgroundColor: "#21252900", color: "#7f7f7f" }}
@@ -107,17 +125,115 @@ const toastShownRef = useRef(false); // Add a ref to track the toast
                     {/* <i className="fa-solid fa-lock"></i>*/} Member's Only 
                   </span>
                   <p className="card-text text-dark">
-                    National Association for Application of Radioisotopes and
-                    Radiation in Industry, Mumbai is organising....
+                    The Department of Atomic Energy (DAE), India has published dosimetry guidelines for accelerators....
                   </p>
+                  <div className="mt-auto">
                   <button
-                    onClick={handleReadMore}
+                    onClick={()=>handleReadMore("/blog/2")}
                     className="btn btn-primary"
                     disabled={isChecking}
                   >
-                    {isChecking ? "Checking..." : "Read More"}
+                    {isChecking ? "Read More" : "Read More"}
                   </button>
+                  </div>
                 </div>
+
+                
+              </div>
+            </div>
+
+            {/* Members Content */}
+            <div className="col-12 col-md-6 col-lg-4">
+
+              <div className="card h-100 d-flex flex-column">
+                <img src="https://picsum.photos/420/250?random=2" className="card-img-top" alt="React Hooks" style={{minHeight:"276px"}}/>
+                <div className="card-body">
+                  <h5 className="card-title text-dark fs-5">Development of Radiation Processing in India</h5>
+                  <p className="card-subtitle mb-0.5 text-dark">October, 2025</p>
+                  <span
+                    className="badge rounded-pill px-0"
+                    style={{ backgroundColor: "#21252900", color: "#7f7f7f" }}
+                  >
+                    {/* <i className="fa-solid fa-lock"></i>*/} Member's Only 
+                  </span>
+                  <p className="card-text text-dark">
+                    This report outlines the progress and current state....
+                  </p>
+                  <div className="mt-auto">
+                  <button
+                    onClick={()=>handleReadMore("/blog/3")}
+                    className="btn btn-primary"
+                    disabled={isChecking}
+                  >
+                    {isChecking ? "Read More" : "Read More"}
+                  </button>
+                  </div>
+                </div>
+
+                
+              </div>
+            </div>
+
+            {/* Free Content */}
+            <div className="col-12 col-md-6 col-lg-4">
+
+              <div className="card h-100 d-flex flex-column">
+                <img src={image1} className="card-img-top" alt="React Hooks" />
+                <div className="card-body">
+                  <h5 className="card-title text-dark">NICSTAR 2026</h5>
+                  <p className="card-subtitle mb-0.5 text-dark">November, 2025</p>
+                  <span
+                    className="badge rounded-pill px-0"
+                    style={{ backgroundColor: "#21252900", color: "#7f7f7f" }}
+                  >
+                    {/* <i className="fa-solid fa-lock"></i>*/} Free Access
+                  </span>
+                  <p className="card-text text-dark">
+                    National Association for Application of Radioisotopes and
+                    Radiation in Industry, Mumbai is organising....
+                  </p>
+                  <Link to="/blog/1">
+                  <button
+                    className="btn btn-primary"
+                    disabled={isChecking}
+                  >
+                    {isChecking ? "Read More" : "Read More"}
+                  </button></Link>
+                </div>
+
+                
+              </div>
+            </div>
+
+            {/* Members Content */}
+            <div className="col-12 col-md-6 col-lg-4">
+
+              <div className="card h-100 d-flex flex-column">
+                <img src="https://picsum.photos/420/250?random=3" className="card-img-top" alt="React Hooks" style={{minHeight:"276px"}}/>
+                <div className="card-body">
+                  <h5 className="card-title text-dark">Technical Exchange on Gamma Irradiator Security and alternative technologies</h5>
+                  <p className="card-subtitle mb-0.5 text-dark">December, 2025</p>
+                  <span
+                    className="badge rounded-pill px-0"
+                    style={{ backgroundColor: "#21252900", color: "#7f7f7f" }}
+                  >
+                    {/* <i className="fa-solid fa-lock"></i>*/} Member's Only 
+                  </span>
+                  <p className="card-text text-dark">
+                    The IIAI is pleased to host a Technical Exchange being supported by International....
+                  </p>
+                  <div className="mt-auto">
+                  <button
+                    onClick={()=>handleReadMore("/blog/4")}
+                    className="btn btn-primary"
+                    disabled={isChecking}
+                  >
+                    {isChecking ? "Read More" : "Read More"}
+                  </button>
+                  </div>
+                </div>
+
+                
               </div>
             </div>
 

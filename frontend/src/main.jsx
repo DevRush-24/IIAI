@@ -10,6 +10,9 @@ import Blog1 from "./pages/Blog.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Blog2 from "./pages/Blog2.jsx";
+import Blog3 from "./pages/Blog3.jsx";
+import Blog4 from "./pages/Blog4.jsx";
 
 
 createRoot(document.getElementById("root")).render(
@@ -26,9 +29,12 @@ createRoot(document.getElementById("root")).render(
         style={{ top: "160px" }}
       />
       <Routes>
-        <Route path="/articles" element={<App />} />
+        <Route path="/news-updates" element={<App />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/blog" element={<ProtectedRoute><Blog1 /></ProtectedRoute>} />
+        <Route path="/blog/1" element={<Blog1 />} />
+        <Route path="/blog/2" element={<ProtectedRoute><Blog2 /></ProtectedRoute>} />
+        <Route path="/blog/3" element={<ProtectedRoute><Blog3 /></ProtectedRoute>} />
+        <Route path="/blog/4" element={<ProtectedRoute><Blog4 /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   </StrictMode>
