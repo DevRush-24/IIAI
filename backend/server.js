@@ -3,6 +3,9 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
 import jwt from "jsonwebtoken";
+import path from "path";
+import fs from "fs";
+import { fileURLToPath } from "url";
 import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
@@ -58,18 +61,32 @@ app.get("/", (req, res) => {
   res.send("Server is running on your localhost...");
 });
 
-app.get("/api/secure-pdf/:id", authenticateToken, (req, res) => {
-  const id = req.params.id;
-  const filePath = path.join(__dirname, "protected-pdfs", id + ".pdf");
 
-  if (!fs.existsSync(filePath)) {
-    return res.status(404).send("PDF not found");
-  }
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.get("/api/secure-pdf/:name", (req, res) => {
+  const requested = req.params.name;
+
+  const realPath = path.join(__dirname, "protected-pdfs", requested + ".pdf");
+  const fakePath = path.join(__dirname, "protected-pdfs", "no-download.pdf");
+
+  const auth = req.headers.authorization;
+
+  // 🔥 If NOT coming from your React fetch() → send FAKE PDF
+  const isMissingToken =
+    !auth ||
+    auth === "Bearer undefined" ||
+    auth === "Bearer null" ||
+    auth.split(" ").length < 2;
+
+  const fileToSend = isMissingToken ? fakePath : realPath;
 
   res.setHeader("Content-Type", "application/pdf");
-  res.setHeader("Content-Disposition", "inline"); 
-  fs.createReadStream(filePath).pipe(res);
+  res.setHeader("Content-Disposition", "inline");
+  fs.createReadStream(fileToSend).pipe(res);
 });
+
 
 
 app.get("/api/auth/me", verifyToken, (req, res) => {
